@@ -1,15 +1,21 @@
 mod kernels;
 use kernels::*;
 mod fourier;
+
+use image::{GenericImageView, GrayImage};
 fn main() 
 {
+    let img_name = "helena.jpg";
     let kernel = Kernel::gaussian(5, 2.0);
 
 }
 
-/*
-to-do list:
+fn image_to_vector(path: &str) -> Vec<Vec<f64>>
+{
+    todo!();
+}
 
-Build a fft alg
-Build a convolution alg
-*/
+fn vector_as_image(image: &Vec<Vec<f64>>, path: &str)
+{
+    todo!();
+}
