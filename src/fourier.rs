@@ -13,6 +13,7 @@ pub fn fft(x: &Vec<f64>) ->Vec<Complex<f64>>
     //pad the image to be an even number
     input.resize(x.len().next_power_of_two(), Complex::zero());
 
+    //perform fft
     let input = post_fft(&input);
 
     return input;
