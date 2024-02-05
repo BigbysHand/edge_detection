@@ -40,7 +40,7 @@ fn post_fft(x: &Vec<Complex<f64>>) -> Vec<Complex<f64>>
 
     for k in 0..(l/2)
     {
-        let t = odd[k] * (c * PI * (k as f64) / (l as f64)).exp();
+        let t = odd[k] * (c * PI * k as f64 / l as f64).exp();
         dft[k] = even[k] + t;
         dft[k + l / 2] = even[k] - t;
     }
@@ -88,7 +88,7 @@ fn post_ifft(x: &Vec<Complex<f64>>) -> Vec<Complex<f64>>
 
     for k in 0..(l / 2)
     {
-        let t = odd[k] * (c * PI * (k as f64) / (l as f64)).exp();
+        let t = odd[k] * (c * PI * k as f64 / l as f64).exp();
         idft[k] = (even[k] + t ) / 2.0;
         idft[k + l/2] = (even[k] - t) / 2.0;
     }

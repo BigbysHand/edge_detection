@@ -2,18 +2,19 @@ mod kernels;
 use kernels::*;
 mod fourier;
 mod convolution;
+mod padding;
 //use convolution;
 
 use image::{GenericImageView, GrayImage};
 fn main()
 {
     let img_name = "helena.jpg";
-    let kernel = Kernel::edge_x();
+    let kernel = Kernel::gaussian(100, 50.0);
 
     println!("image loaded");
     let image = image_to_vector(std::format!("C:/dev/rust/edge_detection/input_images/{}", img_name));
     println!("image conv");
-    let conv_img = convolution::conv_2d(&image, &kernel);
+    let conv_img = convolution::conv_padded_2d(&image, &kernel);
     println!("image saved");
     vector_as_image(&conv_img, std::format!("C:/dev/rust/edge_detection/output_images/{}", img_name));
 
@@ -27,14 +28,14 @@ fn image_to_vector(path: String) -> Vec<Vec<f64>>
     let (width, height) = img.dimensions();
 
     //define empty vector of required size
-    let mut img_vec = vec![vec![0.0; (width as usize)]; (height as usize)];
+    let mut img_vec = vec![vec![0.0; width as usize]; height as usize];
 
     //set greyscaled pixel values of image
     for y in 0..height
     {
         for x in 0..width
         {
-            let this_pix = img.get_pixel(x, y);
+            let this_pix = img.get_pixel(y, x);
             let curr_pix = this_pix.0;
             let intensity = (0.33 * curr_pix[0] as f64 + 0.33 * curr_pix[1] as f64 + 0.33 * curr_pix[2] as f64) / (255.0);
             img_vec[y as usize][x as usize] = intensity;
@@ -53,7 +54,7 @@ fn vector_as_image(image: &Vec<Vec<f64>>, path: String)
     let mut ouput = GrayImage::new(image[0].len() as u32, image.len() as u32);
     for (x, y, pixel) in ouput.enumerate_pixels_mut() 
     {
-        let gray_value = (image[x as usize][y as usize] * 255.0) as u8;
+        let gray_value = (image[y as usize][x as usize] * 255.0) as u8;
         *pixel = image::Luma([gray_value]);
     }
     // save the image

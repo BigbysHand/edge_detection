@@ -5,7 +5,7 @@ pub fn basic_padding(input: &Vec<Vec<f64>>, kernel_width: usize) -> Vec<Vec<f64>
     {
         for x in 0..input[0].len()
         {
-            padded[y + kernel_width / 2][x + kernel_width / 2] = input[y][x];
+            padded[y + kernel_width / 2 as usize][x + kernel_width / 2 as usize] = input[y][x];
         }
     }
     return padded;
